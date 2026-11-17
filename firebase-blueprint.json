@@ -1,0 +1,361 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Public city profile for a CITYLOOP community member (no PII).",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "handle": { "type": "string" },
+        "bio": { "type": "string" },
+        "city": { "type": "string" },
+        "neighborhood": { "type": "string" },
+        "avatarEmoji": { "type": "string" },
+        "interests": { "type": "array" },
+        "role": { "type": "string", "enum": ["member", "moderator", "admin"] },
+        "planTier": { "type": "string", "enum": ["free", "plus"] },
+        "followersCount": { "type": "integer" },
+        "followingCount": { "type": "integer" },
+        "postsCount": { "type": "integer" },
+        "blockedUserIds": { "type": "array" },
+        "onboardingDone": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "displayName", "handle", "city", "role", "planTier", "onboardingDone", "createdAt", "updatedAt"]
+    },
+    "UserPrivateSettings": {
+      "title": "UserPrivateSettings",
+      "description": "Private PII and user settings isolated under owner-only subcollection.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "email": { "type": "string" },
+        "phone": { "type": "string" },
+        "languageCode": { "type": "string", "enum": ["en", "hi"] },
+        "darkThemeMode": { "type": "string", "enum": ["system", "light", "dark"] },
+        "pushEnabled": { "type": "boolean" },
+        "privateProfile": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "languageCode", "darkThemeMode", "pushEnabled", "privateProfile", "createdAt", "updatedAt"]
+    },
+    "FollowEdge": {
+      "title": "FollowEdge",
+      "description": "Follow relationship stored under follower's user subcollection.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "targetUserId": { "type": "string" },
+        "targetName": { "type": "string" },
+        "targetHandle": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "targetUserId", "targetName", "targetHandle", "createdAt"]
+    },
+    "SavedItem": {
+      "title": "SavedItem",
+      "description": "Bookmarked post, marketplace listing, or event.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "itemType": { "type": "string", "enum": ["post", "listing", "event"] },
+        "targetId": { "type": "string" },
+        "title": { "type": "string" },
+        "subtitle": { "type": "string" },
+        "city": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "itemType", "targetId", "title", "city", "createdAt"]
+    },
+    "AppNotification": {
+      "title": "AppNotification",
+      "description": "In-app notification entry for likes, comments, follows, messages, and events.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "actorId": { "type": "string" },
+        "actorName": { "type": "string" },
+        "type": { "type": "string", "enum": ["like", "comment", "follow", "message", "event", "system"] },
+        "title": { "type": "string" },
+        "body": { "type": "string" },
+        "readFlag": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "actorId", "actorName", "type", "title", "body", "readFlag", "createdAt"]
+    },
+    "CityPost": {
+      "title": "CityPost",
+      "description": "Social feed post (text, photo, or short video reel) scoped to a city.",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorHandle": { "type": "string" },
+        "authorEmoji": { "type": "string" },
+        "city": { "type": "string" },
+        "neighborhood": { "type": "string" },
+        "postType": { "type": "string", "enum": ["text", "photo", "reel"] },
+        "caption": { "type": "string" },
+        "mediaUri": { "type": "string" },
+        "videoDurationSec": { "type": "integer" },
+        "tags": { "type": "array" },
+        "communityId": { "type": "string" },
+        "communityName": { "type": "string" },
+        "likesCount": { "type": "integer" },
+        "commentsCount": { "type": "integer" },
+        "status": { "type": "string", "enum": ["active", "flagged", "removed"] },
+        "moderationNote": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "authorName", "authorHandle", "city", "postType", "caption", "likesCount", "commentsCount", "status", "createdAt", "updatedAt"]
+    },
+    "PostComment": {
+      "title": "PostComment",
+      "description": "Comment or reply on a CityPost.",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorName": { "type": "string" },
+        "authorEmoji": { "type": "string" },
+        "body": { "type": "string" },
+        "parentCommentId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "authorId", "authorName", "body", "createdAt"]
+    },
+    "PostLike": {
+      "title": "PostLike",
+      "description": "Like marker keyed by liker UID.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "createdAt"]
+    },
+    "CityCommunity": {
+      "title": "CityCommunity",
+      "description": "City-based neighborhood or interest community.",
+      "type": "object",
+      "properties": {
+        "creatorId": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "city": { "type": "string" },
+        "category": { "type": "string" },
+        "emoji": { "type": "string" },
+        "memberCount": { "type": "integer" },
+        "status": { "type": "string", "enum": ["active", "archived"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["creatorId", "name", "description", "city", "category", "memberCount", "status", "createdAt", "updatedAt"]
+    },
+    "CommunityMember": {
+      "title": "CommunityMember",
+      "description": "Membership record under a community.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["member", "moderator"] },
+        "joinedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "displayName", "role", "joinedAt"]
+    },
+    "MarketplaceListing": {
+      "title": "MarketplaceListing",
+      "description": "Hyperlocal buy/sell listing in INR.",
+      "type": "object",
+      "properties": {
+        "sellerId": { "type": "string" },
+        "sellerName": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "priceInr": { "type": "integer" },
+        "category": { "type": "string" },
+        "condition": { "type": "string", "enum": ["New", "Like New", "Good", "Fair"] },
+        "city": { "type": "string" },
+        "neighborhood": { "type": "string" },
+        "mediaUri": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "sold", "removed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["sellerId", "sellerName", "title", "description", "priceInr", "category", "condition", "city", "status", "createdAt", "updatedAt"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "1-to-1 private messaging thread.",
+      "type": "object",
+      "properties": {
+        "participantIds": { "type": "array" },
+        "participantNames": { "type": "array" },
+        "contextTitle": { "type": "string" },
+        "lastMessage": { "type": "string" },
+        "lastSenderId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["participantIds", "participantNames", "lastMessage", "lastSenderId", "createdAt", "updatedAt"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Message inside a 1-to-1 conversation.",
+      "type": "object",
+      "properties": {
+        "conversationId": { "type": "string" },
+        "participantIds": { "type": "array" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["conversationId", "participantIds", "senderId", "senderName", "text", "createdAt"]
+    },
+    "CityEvent": {
+      "title": "CityEvent",
+      "description": "Local meetup, workshop, or city event.",
+      "type": "object",
+      "properties": {
+        "organizerId": { "type": "string" },
+        "organizerName": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "city": { "type": "string" },
+        "venue": { "type": "string" },
+        "dateLabel": { "type": "string" },
+        "category": { "type": "string" },
+        "priceInr": { "type": "integer" },
+        "rsvpCount": { "type": "integer" },
+        "status": { "type": "string", "enum": ["active", "cancelled"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["organizerId", "organizerName", "title", "description", "city", "venue", "dateLabel", "category", "priceInr", "rsvpCount", "status", "createdAt", "updatedAt"]
+    },
+    "EventRsvp": {
+      "title": "EventRsvp",
+      "description": "RSVP record under an event.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "displayName", "createdAt"]
+    },
+    "LocalBusiness": {
+      "title": "LocalBusiness",
+      "description": "Local business directory profile and promotional offer.",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "description": { "type": "string" },
+        "city": { "type": "string" },
+        "address": { "type": "string" },
+        "offerTitle": { "type": "string" },
+        "offerCode": { "type": "string" },
+        "discountLabel": { "type": "string" },
+        "verified": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["active", "suspended"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "name", "category", "description", "city", "address", "verified", "status", "createdAt", "updatedAt"]
+    },
+    "ModerationReport": {
+      "title": "ModerationReport",
+      "description": "User report for content moderation.",
+      "type": "object",
+      "properties": {
+        "reporterId": { "type": "string" },
+        "targetType": { "type": "string", "enum": ["post", "listing", "comment", "user", "business"] },
+        "targetId": { "type": "string" },
+        "reason": { "type": "string" },
+        "city": { "type": "string" },
+        "status": { "type": "string", "enum": ["open", "resolved", "dismissed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["reporterId", "targetType", "targetId", "reason", "city", "status", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Public user profiles by UID."
+    },
+    "/users/{userId}/private/{docId}": {
+      "schema": { "$ref": "#/entities/UserPrivateSettings" },
+      "description": "Owner-only PII and app preferences."
+    },
+    "/users/{userId}/following/{targetUserId}": {
+      "schema": { "$ref": "#/entities/FollowEdge" },
+      "description": "Followed user IDs."
+    },
+    "/users/{userId}/saved/{savedId}": {
+      "schema": { "$ref": "#/entities/SavedItem" },
+      "description": "Saved posts, listings, and events."
+    },
+    "/users/{userId}/notifications/{notifId}": {
+      "schema": { "$ref": "#/entities/AppNotification" },
+      "description": "User notification inbox."
+    },
+    "/posts/{postId}": {
+      "schema": { "$ref": "#/entities/CityPost" },
+      "description": "City social feed posts."
+    },
+    "/posts/{postId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/PostComment" },
+      "description": "Comments and replies on posts."
+    },
+    "/posts/{postId}/likes/{likerId}": {
+      "schema": { "$ref": "#/entities/PostLike" },
+      "description": "Likes on posts."
+    },
+    "/communities/{communityId}": {
+      "schema": { "$ref": "#/entities/CityCommunity" },
+      "description": "City-based communities."
+    },
+    "/communities/{communityId}/members/{memberId}": {
+      "schema": { "$ref": "#/entities/CommunityMember" },
+      "description": "Community membership records."
+    },
+    "/listings/{listingId}": {
+      "schema": { "$ref": "#/entities/MarketplaceListing" },
+      "description": "Local marketplace listings."
+    },
+    "/conversations/{conversationId}": {
+      "schema": { "$ref": "#/entities/Conversation" },
+      "description": "1-to-1 private conversations."
+    },
+    "/conversations/{conversationId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "1-to-1 chat messages."
+    },
+    "/events/{eventId}": {
+      "schema": { "$ref": "#/entities/CityEvent" },
+      "description": "Local city events and meetups."
+    },
+    "/events/{eventId}/rsvps/{rsvpUserId}": {
+      "schema": { "$ref": "#/entities/EventRsvp" },
+      "description": "Event RSVP entries."
+    },
+    "/businesses/{businessId}": {
+      "schema": { "$ref": "#/entities/LocalBusiness" },
+      "description": "Local businesses and promo offers."
+    },
+    "/reports/{reportId}": {
+      "schema": { "$ref": "#/entities/ModerationReport" },
+      "description": "Content moderation reports."
+    }
+  }
+}

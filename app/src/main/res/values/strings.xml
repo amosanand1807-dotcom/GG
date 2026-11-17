@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">CITYLOOP</string>
+    <string name="tagline">Your City. Your People. Your Community.</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_explore">Explore</string>
+    <string name="nav_create">Create</string>
+    <string name="nav_marketplace">Market</string>
+    <string name="nav_profile">Profile</string>
+    <string name="sign_in_google">Sign in with Google</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="empty_feed_title">Your city loop is waiting</string>
+    <string name="empty_feed_subtitle">Share an update, local tip, or neighborhood moment to kick things off.</string>
+</resources>

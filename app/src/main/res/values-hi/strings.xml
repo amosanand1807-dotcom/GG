@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">CITYLOOP</string>
+    <string name="tagline">आपका शहर। आपके लोग। आपका समुदाय।</string>
+    <string name="nav_home">होम</string>
+    <string name="nav_explore">एक्सप्लोर</string>
+    <string name="nav_create">बनाएं</string>
+    <string name="nav_marketplace">बाज़ार</string>
+    <string name="nav_profile">प्रोफ़ाइल</string>
+    <string name="sign_in_google">Google से साइन इन करें</string>
+    <string name="sign_out">साइन आउट</string>
+    <string name="empty_feed_title">आपका शहर इंतज़ार कर रहा है</string>
+    <string name="empty_feed_subtitle">शुरुआत करने के लिए स्थानीय अपडेट या अनुभव साझा करें।</string>
+</resources>

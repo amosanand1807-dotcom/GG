@@ -1,0 +1,6 @@
+{
+  "name": "CITYLOOP",
+  "description": "Your City. Your People. Your Community. Hyperlocal social feed, communities, marketplace, messaging, events, and local business discovery for Indian cities.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
